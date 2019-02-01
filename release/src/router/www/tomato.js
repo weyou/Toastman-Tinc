@@ -2453,6 +2453,9 @@ REMOVE-END */
 			['MAC Address',		'mac.asp'],
 			['Miscellaneous',	'misc.asp'],
 			['Routing',			'routing.asp'],
+/* SMCROUTE-BEGIN */
+			['Multicast Route',	'smcroute.asp'],
+/* SMCROUTE-END */
 			['Wireless',		'wireless.asp']
 /* VLAN-BEGIN */
 			,['VLAN',			'vlan.asp'],

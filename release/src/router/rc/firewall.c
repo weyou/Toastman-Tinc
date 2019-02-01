@@ -1813,6 +1813,10 @@ int start_firewall(void)
 	run_tinc_firewall_script();
 #endif
 
+#ifdef TCONFIG_SMCROUTE
+    run_smcroute_firewall_script();
+#endif    
+
 	run_nvscript("script_fire", NULL, 1);
 
 	start_arpbind();

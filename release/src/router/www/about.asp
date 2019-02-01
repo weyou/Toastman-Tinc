@@ -158,6 +158,15 @@ Copyright (C) 2010-2011 Jean-Yves Avenard<br>
 <a href='mailto:jean-yves@avenard.org'>jean-yves@avenard.org</a><br>
 <br>
 <!-- JYAVENARD-END -->
+<!-- WEYOU-BEGIN -->
+<b>"Weyou" Features:</b><br>
+<!-- SMCROUTE-BEGIN -->
+- SMCRoute Daemon integration and GUI<br>
+<!-- SMCROUTE-END -->
+Copyright (C) 2019 Kelvin You<br>
+<a href='mailto:weyou.dev@gmail.com'>weyou.dev@gmail.com</a><br>
+<br>
+<!-- WEYOU-END -->
 <b>"Lancethepants" Features:</b><br>
 <!-- TINC-BEGIN -->
 - Tinc Daemon integration and GUI<br>

@@ -1347,6 +1347,12 @@ static const nvset_t nvset_list[] = {
 	{"tinc_firewall",		V_NONE			},
 #endif
 
+#ifdef TCONFIG_SMCROUTE
+	{"smc_enable",          V_01            },
+	{"smc_config",          V_TEXT(0, 4096) },
+	{"smc_firewall",        V_TEXT(0, 4096) },
+#endif
+
 // pptp server
 	{ "pptpd_enable",		V_01				},
 	{ "pptpd_remoteip",		V_TEXT(0,24)		},

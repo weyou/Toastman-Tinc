@@ -2857,6 +2857,14 @@ TOP:
 	}
 #endif
 
+#ifdef TCONFIG_SMCROUTE
+        if (strcmp(service, "smcroute") == 0) {
+                if (action & A_STOP) stop_smcroute();
+                if (action & A_START) start_smcroute();
+                goto CLEAR;
+        }
+#endif
+
 #ifdef TCONFIG_NOCAT
 	if (strcmp(service, "splashd") == 0) {
 		if (action & A_STOP) stop_splashd();

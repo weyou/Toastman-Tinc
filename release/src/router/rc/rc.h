@@ -491,6 +491,14 @@ extern void stop_tinc();
 extern void run_tinc_firewall_script();
 #endif
 
+#ifdef TCONFIG_SMCROUTE
+extern void start_smcroute();
+extern void start_smcroute_wanup();
+extern void stop_smcroute();
+extern void run_smcroute_firewall_script();
+#endif
+
+
 // qoslimit.c
 extern void ipt_qoslimit(int chain);
 extern void start_qoslimit(void);

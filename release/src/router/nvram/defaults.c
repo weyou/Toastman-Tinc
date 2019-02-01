@@ -953,6 +953,12 @@ const defaults_t defaults[] = {
 	{"tinc_firewall",		""		},
 #endif
 
+#ifdef TCONFIG_SMCROUTE
+	{"smc_enable",          "0"     },
+	{"smc_config",          ""      },    
+	{"smc_firewall",        ""      },
+#endif
+
 #ifdef TCONFIG_USERPPTP
 	{ "pptp_client_enable",   "0"             },
 	{ "pptp_client_peerdns",  "0"             },

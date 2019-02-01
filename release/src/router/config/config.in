@@ -149,3 +149,8 @@ config TCONFIG_DNSSEC
 config TCONFIG_TINC
 	bool "TINC"
 	default n
+
+config TCONFIG_SMCROUTE
+	bool "SMCROUTE"
+	default n
+

@@ -1038,6 +1038,11 @@ void start_wan_done(char *wan_ifname)
 		start_tinc_wanup();
 #endif
 
+#ifdef TCONFIG_SMCROUTE
+	if(wanup)
+		start_smcroute_wanup();
+#endif
+
 #ifdef TCONFIG_USERPPTP
 	if (wanup && nvram_get_int("pptp_client_enable"))
 		start_pptp_client();
@@ -1054,6 +1059,10 @@ void stop_wan(void)
 	char *next;
 	
 	TRACE_PT("begin\n");
+
+#ifdef TCONFIG_SMCROUTE
+	stop_smcroute();
+#endif
 
 #ifdef TCONFIG_TINC
 	stop_tinc();

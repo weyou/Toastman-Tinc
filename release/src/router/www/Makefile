@@ -229,6 +229,14 @@ ifneq ($(TCONFIG_TINC),y)
 	sed -i $(INSTALLDIR)/www/about.asp -e "/TINC-BEGIN/,/TINC-END/d"
 endif
 
+# Only include the smcroute page if it is compiled in
+ifneq ($(TCONFIG_SMCROUTE),y)
+	rm -f $(INSTALLDIR)/www/advanced-smcroute.asp
+	sed -i $(INSTALLDIR)/www/tomato.js -e "/SMCROUTE-BEGIN/,/SMCROUTE-END/d"
+	sed -i $(INSTALLDIR)/www/about.asp -e "/SMCROUTE-BEGIN/,/SMCROUTE-END/d"
+	sed -i $(INSTALLDIR)/www/about.asp -e "/WEYOU-BEGIN/,/WEYOU-END/d"
+endif
+
 # clean up
 	cd $(INSTALLDIR)/www && \
 	for F in $(wildcard *.asp *.js *.jsx *.html); do \
@@ -257,6 +265,7 @@ endif
 		-e "/ VLAN-BEGIN/d"	-e "/ VLAN-END/d" \
 		-e "/ NOVLAN-BEGIN/d"	-e "/ NOVLAN-END/d" \
 		-e "/TINC-BEGIN/d"	-e "/TINC-END/d"\
+		-e "/SMCROUTE-BEGIN/d"	-e "/SMCROUTE-END/d"\
 		|| true; \
 	done
 

@@ -36,6 +36,9 @@ endif
 ifeq ($(TCONFIG_TINC),y)
 OBJS += tinc.o
 endif
+ifeq ($(TCONFIG_SMCROUTE),y)
+OBJS += smcroute.o
+endif
 ifeq ($(TCONFIG_NOCAT),y)
 OBJS += nocat.o
 endif

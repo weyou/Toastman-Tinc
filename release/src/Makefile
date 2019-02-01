@@ -51,7 +51,9 @@ USERPPTP ?= "n"
 PPTPD ?= "n"
 TCPDUMP ?= "n"
 DNSSEC ?= "n"
+OPENVPN ?= "n"
 TINC ?= "n"
+SMCROUTE ?= "n"
 
 ifeq ($(NVRAM_SIZE),)
 NVRAM_SIZE = 0
@@ -337,6 +339,8 @@ what:
 # HFS
 # USERPPTP
 # VLAN
+# TINC
+# SMCROUTE
 
 define RouterOptions
 	@( \
@@ -478,8 +482,14 @@ define RouterOptions
 		echo "TCONFIG_DNSSEC=y" >>$(1); \
 	fi; \
 	if [ "$(TINC)" = "y" ]; then \
+		sed -i "/TCONFIG_LZO/d" $(1); \
+		echo "TCONFIG_LZO=y" >>$(1); \
 		sed -i "/TCONFIG_TINC/d" $(1); \
 		echo "TCONFIG_TINC=y" >>$(1); \
+	fi; \
+	if [ "$(SMCROUTE)" = "y" ]; then \
+		sed -i "/TCONFIG_SMCROUTE/d" $(1); \
+		echo "TCONFIG_SMCROUTE=y" >>$(1); \
 	fi; \
 	)
 endef
@@ -632,6 +642,12 @@ define KernelConfig
 			sed -i "/CONFIG_MTD_NFLASH/d" $(1); \
 			echo "CONFIG_MTD_NFLASH=y" >>$(1); \
 		fi; \
+        	if [ "$(SMCROUTE)" = "y" ]; then \
+			sed -i "/CONFIG_IP_PIMSM_V1/d" $(1); \
+			echo "CONFIG_IP_PIMSM_V1=y" >>$(1); \
+			sed -i "/CONFIG_IP_PIMSM_V2/d" $(1); \
+			echo "CONFIG_IP_PIMSM_V2=y" >>$(1); \
+		fi; \
 	fi; \
 	if [ "$(USB)" = "" ]; then \
 		sed -i "/CONFIG_EFI_PARTITION/d" $(1); \
@@ -765,7 +781,7 @@ endif
 ## Make the "normal (with NTFS support) + VPN" build
 e:
 ifeq ($(CONFIG_LINUX26),y)
-	@$(MAKE) bin OPENVPN=y USERPPTP=y PPTPD=y NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y NO_LIBOPT=y MEDIASRV=y IPV6SUPP=y B=E BUILD_DESC="$(VPN)" USB="USB" VLAN="$(VLAN)" SNMP=n TCPDUMP="$(TCPDUMP)" DNSSEC=n TINC=y
+	@$(MAKE) bin $(if $(filter n, $(TINC)),OPENVPN=y,OPENVPN="$(OPENVPN)") TINC="$(TINC)" USERPPTP=y PPTPD=y NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y NO_LIBOPT=y MEDIASRV=y IPV6SUPP=y B=E BUILD_DESC="$(VPN)" USB="USB" VLAN="$(VLAN)" SNMP=n TCPDUMP="$(TCPDUMP)" DNSSEC="$(DNSSEC)" SMCROUTE="$(SMCROUTE)"
 else
 #	@$(MAKE) bin OPENVPN=y USERPPTP=y PPTPD=y NTFS=y B=E BUILD_DESC="$(VPN)" USB="USB" VLAN="$(VLAN)"
 	@$(MAKE) bin OPENVPN=y USERPPTP=y PPTPD=y BBEXTRAS=y USBEXTRAS=y NTFS=y B=E BUILD_DESC="$(VPN)" USB="USB" SNMP=y VLAN="$(VLAN)" TCPDUMP="$(TCPDUMP)"
@@ -792,9 +808,9 @@ endif
 ## Make the "normal with Extras and NTFS" build
 m:
 ifeq ($(CONFIG_LINUX26),y)
-	@$(MAKE) bin NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y NO_LIBOPT=y MEDIASRV=y IPV6SUPP=y B=M BUILD_DESC="Ext" USB="USB" VLAN="$(VLAN)" SNMP=y USERPPTP=y  PPTPD=y TCPDUMP="$(TCPDUMP)"
+	@$(MAKE) bin NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y NO_LIBOPT=y MEDIASRV=y IPV6SUPP=y B=M BUILD_DESC="Ext" USB="USB" VLAN="$(VLAN)" SNMP="$(SNMP)" USERPPTP=y  PPTPD=y TCPDUMP="$(TCPDUMP)"
 else
-	@$(MAKE) bin NTFS=y BBEXTRAS=y USBEXTRAS=y B=M BUILD_DESC="Ext" USB="USB" VLAN="$(VLAN)" SNMP=y USERPPTP=y PPTPD=y TCPDUMP="$(TCPDUMP)"
+	@$(MAKE) bin NTFS=y BBEXTRAS=y USBEXTRAS=y B=M BUILD_DESC="Ext" USB="USB" VLAN="$(VLAN)" SNMP=$(SNMP) USERPPTP=y PPTPD=y TCPDUMP="$(TCPDUMP)"
 endif
 
 ## Roadkill
@@ -1002,7 +1018,6 @@ e1200v1f:
 
 v2e:
 	@$(MAKE) e MIPS32=r2 WNR3500LV2=y NO_JFFS=y
-
 
 setprofile:
 	echo '#ifndef TOMATO_PROFILE' > router/shared/tomato_profile.h

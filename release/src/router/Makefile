@@ -133,6 +133,7 @@ obj-$(TCONFIG_ZEBRA) += zebra
 obj-$(TCONFIG_LZO) += lzo
 obj-$(TCONFIG_OPENVPN) += openvpn
 obj-$(TCONFIG_TINC) += tinc
+obj-$(TCONFIG_SMCROUTE) += smcroute
 obj-$(TCONFIG_EMF) += emf
 obj-$(TCONFIG_EMF) += igs
 
@@ -310,6 +311,9 @@ endif
 	install $(LIBDIR)/libnsl.so.0 $(TARGETDIR)/lib/
 ifeq ($(TCONFIG_SSH),y)
 	install $(LIBDIR)/libutil.so.0 $(TARGETDIR)/lib/
+endif
+ifeq ($(TCONFIG_SMCROUTE),y)
+	install $(LIBDIR)/librt.so.0 $(TARGETDIR)/lib/
 endif
 ifneq ($(TCONFIG_OPTIMIZE_SHARED_LIBS),y)
 	install $(LIBDIR)/libresolv.so.0 $(TARGETDIR)/lib/
@@ -1569,6 +1573,31 @@ tinc-install:
 	install -D tinc/src/tincd $(INSTALLDIR)/tinc/usr/sbin/tincd
 	$(STRIP) $(INSTALLDIR)/tinc/usr/sbin/tinc
 	$(STRIP) $(INSTALLDIR)/tinc/usr/sbin/tincd
+
+smcroute/stamp-h1:
+	@cd smcroute && autoreconf -W portability -visfm && \
+	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) \
+	CFLAGS="-Os -Wall $(EXTRACFLAGS) -fPIC -ffunction-sections -fdata-sections" \
+	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -fPIC" \
+	$(CONFIGURE) \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	@touch smcroute/stamp-h1
+
+smcroute: smcroute/stamp-h1
+	@$(SEP)
+	@$(MAKE) -C smcroute $(PARALLEL_BUILD)
+
+smcroute-clean:
+	-@$(MAKE) -C smcroute clean
+	@rm -f smcroute/stamp-h1
+
+smcroute-install:
+	install -D smcroute/src/smcrouted $(INSTALLDIR)/smcroute/usr/sbin/smcrouted
+	install -D smcroute/src/smcroutectl $(INSTALLDIR)/smcroute/usr/sbin/smcroutectl
+	$(STRIP) $(INSTALLDIR)/smcroute/usr/sbin/smcrouted
+	$(STRIP) $(INSTALLDIR)/smcroute/usr/sbin/smcroutectl
 
 sd-idle/stamp-h1:
 	cd sd-idle \
