@@ -223,7 +223,10 @@ ifneq ($(TCONFIG_DNSSEC),y)
 endif
 
 # Only include the Tinc page if it is compiled in
-ifneq ($(TCONFIG_TINC),y)
+ifeq ($(TCONFIG_TINC),y)
+	sed -i $(INSTALLDIR)/www/tomato.js -e "/ VPN-BEGIN/d" -e "/ VPN-END/d"
+	sed -i $(INSTALLDIR)/www/admin-access.asp -e "/ VPN-BEGIN/d" -e "/ VPN-END/d"	
+else
 	rm -f $(INSTALLDIR)/www/vpn-tinc.asp
 	sed -i $(INSTALLDIR)/www/tomato.js -e "/TINC-BEGIN/,/TINC-END/d"
 	sed -i $(INSTALLDIR)/www/about.asp -e "/TINC-BEGIN/,/TINC-END/d"

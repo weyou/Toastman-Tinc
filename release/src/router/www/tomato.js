@@ -2518,10 +2518,10 @@ REMOVE-END */
 			['PPTP Online',		'pptp-online.asp'],
 /* PPTPD-END */
 /* USERPPTP-BEGIN */
-			['PPTP Client',		'pptp.asp']
+			['PPTP Client',		'pptp.asp'],
 /* USERPPTP-END */
 /* TINC-BEGIN */
-			,['Tinc Daemon',	'tinc.asp']
+			['Tinc Daemon',	'tinc.asp']
 /* TINC-END */
 		] ],
 /* VPN-END */
