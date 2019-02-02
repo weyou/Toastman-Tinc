@@ -37,3 +37,4 @@ TCONFIG_SAMBASRV=y
 # TCONFIG_DNSSEC is not set
 # TCONFIG_TINC is not set
 # TCONFIG_SMCROUTE is not set
+# TCONFIG_IPERF3 is not set

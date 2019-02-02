@@ -134,6 +134,7 @@ obj-$(TCONFIG_LZO) += lzo
 obj-$(TCONFIG_OPENVPN) += openvpn
 obj-$(TCONFIG_TINC) += tinc
 obj-$(TCONFIG_SMCROUTE) += smcroute
+obj-$(TCONFIG_IPERF3) += iperf3
 obj-$(TCONFIG_EMF) += emf
 obj-$(TCONFIG_EMF) += igs
 
@@ -1582,7 +1583,7 @@ smcroute/stamp-h1:
 	$(CONFIGURE) \
 	--prefix=/usr \
 	--sysconfdir=/etc \
-	--localstatedir=/var \
+	--localstatedir=/var
 	@touch smcroute/stamp-h1
 
 smcroute: smcroute/stamp-h1
@@ -1598,6 +1599,32 @@ smcroute-install:
 	install -D smcroute/src/smcroutectl $(INSTALLDIR)/smcroute/usr/sbin/smcroutectl
 	$(STRIP) $(INSTALLDIR)/smcroute/usr/sbin/smcrouted
 	$(STRIP) $(INSTALLDIR)/smcroute/usr/sbin/smcroutectl
+
+iperf3/stamp-h1:
+	@cd iperf3 && touch README NEWS AUTHORS ChangeLog && autoreconf -W portability -visfm && \
+	CC=$(CC) AR=$(AR) RANLIB=$(RANLIB) LD=$(LD) \
+	CFLAGS="-Os -Wall $(EXTRACFLAGS) -fPIC -ffunction-sections -fdata-sections -D_GNU_SOURCE" \
+	LDFLAGS="-ffunction-sections -fdata-sections -Wl,--gc-sections -fPIC" \
+	AM_MAKEFLAGS="noinst_PROGRAMS=" \
+	$(CONFIGURE) \
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	--disable-shared \
+	--without-openssl
+	@touch iperf3/stamp-h1
+
+iperf3: iperf3/stamp-h1
+	@$(SEP)
+	@$(MAKE) -C iperf3 AM_MAKEFLAGS="noinst_PROGRAMS=" $(PARALLEL_BUILD)
+
+iperf3-clean:
+	-@$(MAKE) -C iperf3 clean
+	@rm -f iperf3/stamp-h1
+
+iperf3-install:
+	install -D iperf3/src/iperf3 $(INSTALLDIR)/iperf3/usr/sbin/iperf3
+	$(STRIP) $(INSTALLDIR)/iperf3/usr/sbin/iperf3
 
 sd-idle/stamp-h1:
 	cd sd-idle \

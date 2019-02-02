@@ -54,6 +54,7 @@ DNSSEC ?= "n"
 OPENVPN ?= "n"
 TINC ?= "n"
 SMCROUTE ?= "n"
+IPERF3 ?= "n"
 
 ifeq ($(NVRAM_SIZE),)
 NVRAM_SIZE = 0
@@ -491,6 +492,10 @@ define RouterOptions
 		sed -i "/TCONFIG_SMCROUTE/d" $(1); \
 		echo "TCONFIG_SMCROUTE=y" >>$(1); \
 	fi; \
+	if [ "$(IPERF3)" = "y" ]; then \
+		sed -i "/TCONFIG_IPERF3/d" $(1); \
+		echo "TCONFIG_IPERF3=y" >>$(1); \
+	fi; \
 	)
 endef
 
@@ -781,7 +786,7 @@ endif
 ## Make the "normal (with NTFS support) + VPN" build
 e:
 ifeq ($(CONFIG_LINUX26),y)
-	@$(MAKE) bin $(if $(filter n, $(TINC)),OPENVPN=y,OPENVPN="$(OPENVPN)") TINC="$(TINC)" USERPPTP=y PPTPD=y NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y NO_LIBOPT=y MEDIASRV=y IPV6SUPP=y B=E BUILD_DESC="$(VPN)" USB="USB" VLAN="$(VLAN)" SNMP=n TCPDUMP="$(TCPDUMP)" DNSSEC="$(DNSSEC)" SMCROUTE="$(SMCROUTE)"
+	@$(MAKE) bin $(if $(filter n, $(TINC)),OPENVPN=y,OPENVPN="$(OPENVPN)") TINC="$(TINC)" USERPPTP="$(USERPPTP)" PPTPD="$(PPTPD)" NTFS=y BBEXTRAS=y USBEXTRAS=y EBTABLES=y NO_LIBOPT=y MEDIASRV=y IPV6SUPP=y B=E BUILD_DESC="$(VPN)" USB="USB" VLAN="$(VLAN)" SNMP="$(SNMP)" TCPDUMP="$(TCPDUMP)" DNSSEC="$(DNSSEC)" SMCROUTE="$(SMCROUTE)" IPERF3="$(IPERF3)"
 else
 #	@$(MAKE) bin OPENVPN=y USERPPTP=y PPTPD=y NTFS=y B=E BUILD_DESC="$(VPN)" USB="USB" VLAN="$(VLAN)"
 	@$(MAKE) bin OPENVPN=y USERPPTP=y PPTPD=y BBEXTRAS=y USBEXTRAS=y NTFS=y B=E BUILD_DESC="$(VPN)" USB="USB" SNMP=y VLAN="$(VLAN)" TCPDUMP="$(TCPDUMP)"

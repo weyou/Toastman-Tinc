@@ -234,7 +234,11 @@ ifneq ($(TCONFIG_SMCROUTE),y)
 	rm -f $(INSTALLDIR)/www/advanced-smcroute.asp
 	sed -i $(INSTALLDIR)/www/tomato.js -e "/SMCROUTE-BEGIN/,/SMCROUTE-END/d"
 	sed -i $(INSTALLDIR)/www/about.asp -e "/SMCROUTE-BEGIN/,/SMCROUTE-END/d"
-	sed -i $(INSTALLDIR)/www/about.asp -e "/WEYOU-BEGIN/,/WEYOU-END/d"
+	#sed -i $(INSTALLDIR)/www/about.asp -e "/WEYOU-BEGIN/,/WEYOU-END/d"
+endif
+
+ifneq ($(TCONFIG_IPERF3),y)
+	sed -i $(INSTALLDIR)/www/about.asp -e "/IPERF3-BEGIN/,/IPERF3-END/d"
 endif
 
 # clean up
@@ -266,6 +270,7 @@ endif
 		-e "/ NOVLAN-BEGIN/d"	-e "/ NOVLAN-END/d" \
 		-e "/TINC-BEGIN/d"	-e "/TINC-END/d"\
 		-e "/SMCROUTE-BEGIN/d"	-e "/SMCROUTE-END/d"\
+		-e "/IPERF3-BEGIN/d"	-e "/IPERF3-END/d"\
 		|| true; \
 	done
 

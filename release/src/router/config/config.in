@@ -154,3 +154,6 @@ config TCONFIG_SMCROUTE
 	bool "SMCROUTE"
 	default n
 
+config TCONFIG_IPERF3
+	bool "Iperf3 performance test tool" 
+	default n

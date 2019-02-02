@@ -163,6 +163,9 @@ Copyright (C) 2010-2011 Jean-Yves Avenard<br>
 <!-- SMCROUTE-BEGIN -->
 - SMCRoute Daemon integration and GUI<br>
 <!-- SMCROUTE-END -->
+<!-- IPERF3-BEGIN -->
+- IPerf3 performance test tool integration<br>
+<!-- IPERF3-END -->
 Copyright (C) 2019 Kelvin You<br>
 <a href='mailto:weyou.dev@gmail.com'>weyou.dev@gmail.com</a><br>
 <br>
